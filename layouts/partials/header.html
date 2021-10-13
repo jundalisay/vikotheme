@@ -1,0 +1,59 @@
+<!--
+    Bulma based navbar, change the links to suit your requirements
+-->
+
+{{ $logo := resources.Get "images/logos/logo.png" }}
+{{ $orgName := .Site.Params.contact.org_name }}
+
+{{ $currentPage := . }}
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item " href="{{ $.Site.BaseURL }}">
+                <img src="{{ $logo.RelPermalink }}" alt="{{ $orgName }}" />
+            </a>
+            <a class="navbar-burger" role="button" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-end">
+            {{ $list := .Site.Menus.main }}
+            {{ $len := (len $list) }}
+
+            {{ range $index, $element := $list }}
+                {{ if $element.HasChildren }}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="{{ $element.URL }}" class="navbar-link">{{ $element.Name }}</a>
+                        <div class="navbar-dropdown">
+                            {{ range $element.Children }}
+                                <a class="navbar-item navbar-item-dropdown" href="{{ .URL }}">{{ .Name }}</a>
+                            {{ end }}
+                        </div>
+                    </div>
+                {{ else if lt (add $index 1) $len }}
+                    <a class="navbar-item" href="{{ $element.URL }}">{{ $element.Name }}</a>
+                {{ else }}
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="{{ $element.URL }}" class="button is-primary">{{ $element.Name }}</a>
+                        </div>
+                    </div>
+                {{ end }}
+            {{ end }}
+
+
+    <div>
+        <ul class="language-list">
+            {{ range $.Site.Home.AllTranslations }}
+            <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
+            {{ end }}
+        </ul>
+    </div>
+
+
+        </div>
+    </div>
+</nav>
